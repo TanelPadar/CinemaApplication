@@ -19,14 +19,15 @@ public class UserService {
         return userMapper.userDtoList(userRepository.findAll());
     }
 
-    public boolean createUser(String username) {
+    public UserDto createUser(String username) {
+        User existingUser = userRepository.findByUsername(username);
         if (!userRepository.existsByUsername(username)) {
             User user = new User();
             user.setUsername(username);
-            userRepository.save(user);
-            return true;
+            return userMapper.userToDto(userRepository.save(user));
         } else {
-            return false;
+            return userMapper.userToDto(existingUser);
         }
     }
+
 }
