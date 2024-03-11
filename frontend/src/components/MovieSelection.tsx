@@ -12,43 +12,56 @@ interface ScheduleItem {
     id: number;
     screeningTime: Date;
     movie: Movie;
+    movieScheduleId: number;
+    auditoriumId: number;
 }
 
 interface MovieSelectionProps {
     scheduleItems: ScheduleItem[];
+    navigate: (numberOfTickets: number, selectedMovies: ScheduleItem[]) => void;
 }
 
-const MovieSelection = ({ scheduleItems }: MovieSelectionProps) => {
-    const [selectedMovies, setSelectedMovies] = useState<number[]>([]);
+const MovieSelection= ({ scheduleItems, navigate }: MovieSelectionProps) => {
+    const [selectedMovie, setSelectedMovie] = useState<ScheduleItem | null>(null);
+    const [numberOfTickets, setNumberOfTickets] = useState<number>(1);
 
-    const handleMovieSelection = (event: ChangeEvent<HTMLInputElement>, movieId: number) => {
-        if (event.target.checked) {
-            setSelectedMovies([...selectedMovies, movieId]);
+    const handleMovieSelection = (event: ChangeEvent<HTMLInputElement>, scheduleItem: ScheduleItem) => {
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            setSelectedMovie(scheduleItem);
         } else {
-            setSelectedMovies(selectedMovies.filter(id => id !== movieId));
+            setSelectedMovie(null);
         }
     };
 
     const handleConfirmSelection = () => {
-        const selectedMovieInfo = selectedMovies.map(movieId => {
-            const selectedMovie = scheduleItems.find(item => item.id === movieId);
-            return selectedMovie;
-        });
-        console.log("Selected movies:", selectedMovieInfo);
+        navigate(numberOfTickets, selectedMovie ? [selectedMovie] : []);
     };
 
+    const handleNumberOfPeopleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const tickets = parseInt(event.target.value);
+        setNumberOfTickets(tickets);
+    };
 
     return (
         <div>
+            <label htmlFor="numberOfPeopleInput">Mitu piletit?</label>
+            <input
+                type="number"
+                id="numberOfPeopleInput"
+                value={numberOfTickets}
+                onChange={handleNumberOfPeopleChange}
+                className="form-control mb-3"
+            />
             <ul className="list-group">
                 {scheduleItems.map(item => (
                     <li key={item.id} className="list-group-item">
                         <input
                             type="checkbox"
                             id={`movie-${item.id}`}
-                            value={item.id}
                             className="mx-2"
-                            onChange={(e) => handleMovieSelection(e, item.id)}
+                            checked={selectedMovie?.id === item.id}
+                            onChange={(e) => handleMovieSelection(e, item)}
                         />
                         <label htmlFor={`movie-${item.id}`} className="ml-2">
                             <strong>{item.movie.name}</strong> - {item.screeningTime.toLocaleString()}
@@ -59,7 +72,7 @@ const MovieSelection = ({ scheduleItems }: MovieSelectionProps) => {
             <button
                 className="btn btn-primary mt-3"
                 onClick={handleConfirmSelection}
-                disabled={selectedMovies.length === 0}
+                disabled={!selectedMovie || numberOfTickets === 0}
             >
                 Confirm Selection
             </button>

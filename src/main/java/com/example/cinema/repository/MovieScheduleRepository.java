@@ -18,17 +18,24 @@ public interface MovieScheduleRepository extends JpaRepository<MovieSchedule, Lo
     List<MovieSchedule> findByIdIn(List<Long> scheduleIds);
 
     @Query("""
-            SELECT ms
-            FROM MovieSchedule ms
-            JOIN ms.movie movie
-            WHERE movie.genre IN (
-                SELECT DISTINCT movie.genre 
-                FROM Order o
-                JOIN o.movieSchedule ms
-                JOIN ms.movie movie
-                WHERE o.user.id = :userId
-            )
-            """)
+           SELECT ms
+           FROM MovieSchedule ms
+           JOIN ms.movie movie
+           WHERE (
+               SELECT COUNT(o.id)
+               FROM Order o
+               JOIN o.movieSchedule mso
+               JOIN mso.movie m
+               WHERE o.user.id = :userId AND m.genre = movie.genre
+           ) >= 2
+           ORDER BY (
+               SELECT COUNT(o.id)
+               FROM Order o
+               JOIN o.movieSchedule mso
+               JOIN mso.movie m
+               WHERE o.user.id = :userId AND m.genre = movie.genre
+           ) DESC
+           """)
     List<MovieSchedule> findByUserHistory(@Param("userId") Long userId);
 
 

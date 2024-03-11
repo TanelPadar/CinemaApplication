@@ -10,7 +10,7 @@ const Home = () => {
         try {
             const response = await axios.post(`http://localhost:8080/api/v1/user/login/${username}`);
             const user = response.data;
-            localStorage.setItem('logged-in-user', JSON.stringify(user));
+            localStorage.setItem('logged_in_user', JSON.stringify(user));
             navigate("/schedule");
 
         } catch (error) {
@@ -20,7 +20,7 @@ const Home = () => {
 
     return (
         <div>
-            <LoginForm onSubmit={handleLoginFormSubmit} />
+            <LoginForm login={handleLoginFormSubmit} />
         </div>
     );
 }

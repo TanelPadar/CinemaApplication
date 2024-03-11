@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 interface LoginFormProps {
-    onSubmit: (username: string) => void;
+    login: (username: string) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
+const LoginForm = ({ login }:LoginFormProps) => {
     const [username, setUsername] = useState('');
 
     const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -13,7 +13,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        onSubmit(username);
+        login(username);
     };
 
     return (
