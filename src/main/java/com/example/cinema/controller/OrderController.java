@@ -1,5 +1,7 @@
 package com.example.cinema.controller;
 
+
+import com.example.cinema.dto.OrderDto;
 import com.example.cinema.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,5 +15,11 @@ public class OrderController {
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
+
+    @PostMapping("/new")
+    public void createOrder(@RequestBody OrderDto order) {
+        orderService.createOrder(order);
+    }
+
 
 }

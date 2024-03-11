@@ -13,7 +13,7 @@ public class Ticket {
 
     private Long id;
 
-    private Integer seat;
+    private int seat;
 
     private BigDecimal price;
 

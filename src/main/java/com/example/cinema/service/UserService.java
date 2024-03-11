@@ -21,13 +21,12 @@ public class UserService {
 
     public UserDto createUser(String username) {
         User existingUser = userRepository.findByUsername(username);
-        if (!userRepository.existsByUsername(username)) {
+        if (existingUser == null) {
             User user = new User();
             user.setUsername(username);
             return userMapper.userToDto(userRepository.save(user));
-        } else {
-            return userMapper.userToDto(existingUser);
         }
+        return userMapper.userToDto(existingUser);
     }
 
 }
