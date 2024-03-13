@@ -11,6 +11,12 @@ const Summary = () => {
             <div className={"d-block"}>
                 <h2>Thank you!</h2>
                 <p>Number of tickets: {numberOfTickets}</p>
+                <p>Selected seats:</p>
+                <ul>
+                    {selectedSeats.map((seat, index) => (
+                        <li key={index}>{seat}</li>
+                    ))}
+                </ul>
                 <p>Selected movies:</p>
                 <ul>
                     {selectedMovie.map((item, index: number) => (

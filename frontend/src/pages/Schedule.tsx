@@ -48,8 +48,7 @@ const Schedule = () => {
     };
 
     const fetchFilteredData = (filterType: string, filterValue: string | number | boolean) => {
-        let url = `movie-schedule/search?${filterType}=${filterValue}`;
-        axios.get(url)
+        axios.get(`movie-schedule/search?${filterType}=${filterValue}`)
             .then(response => {
                 const parsedData = response.data.map((item: ScheduleItem) => ({
                     ...item,

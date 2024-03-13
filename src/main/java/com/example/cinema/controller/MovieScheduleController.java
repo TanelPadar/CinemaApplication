@@ -31,10 +31,8 @@ public class MovieScheduleController {
         return movieScheduleService.getMovieScheduleBySearch(genre, ageLimit, language, screeningTime);
     }
 
-
-
     @GetMapping("/recommended/{userId}")
-    public List<MovieScheduleDto> test(@PathVariable Long userId) {
+    public List<MovieScheduleDto> getRecommended(@PathVariable Long userId) {
         return movieScheduleService.getMoviesByUserhistory(userId);
     }
 

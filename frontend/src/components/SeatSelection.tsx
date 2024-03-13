@@ -41,7 +41,7 @@ const SeatSelection = ({rows, seatsPerRow, takenSeats, recommendedSeats, navigat
                             return (
                                 <Seat
                                     key={seatIndex}
-                                    seatNumber={seatNumber}
+                                    seatNumber={rowIndex * seatsPerRow + seatIndex + 1}
                                     isTaken={isTaken}
                                     isRecommended={isRecommended}
                                 />
