@@ -59,7 +59,6 @@ const SeatSelection = ({rows, seatsPerRow, takenSeats, recommendedSeats, navigat
                 <div className="d-block">
                     {renderSeatRows()}
                     <Button onClick={() => navigate(recommendedSeats)} className="mt-5">Confirm Selection</Button>
-
                 </div>
             </div>
 

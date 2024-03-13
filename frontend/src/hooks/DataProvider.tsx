@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface DataContextType {
-    selectedMovies: any[];
-    setSelectedMovies: React.Dispatch<React.SetStateAction<any[]>>;
+    selectedMovie: any[];
+    setSelectedMovie: React.Dispatch<React.SetStateAction<any[]>>;
     numberOfTickets: number;
     setNumberOfTickets: React.Dispatch<React.SetStateAction<number>>;
     selectedSeats: number[];
@@ -15,12 +15,12 @@ interface DataProviderProps {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider = ({ children }: DataProviderProps) => {
-    const [selectedMovies, setSelectedMovies] = useState<any[]>([]);
+    const [selectedMovie, setSelectedMovie] = useState<any[]>([]);
     const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
     const [numberOfTickets, setNumberOfTickets] = useState<number>(0);
 
     return (
-        <DataContext.Provider value={{ selectedMovies, setSelectedMovies, numberOfTickets, setNumberOfTickets, selectedSeats,setSelectedSeats }}>
+        <DataContext.Provider value={{ selectedMovie, setSelectedMovie, numberOfTickets, setNumberOfTickets, selectedSeats,setSelectedSeats }}>
             {children}
         </DataContext.Provider>
     );

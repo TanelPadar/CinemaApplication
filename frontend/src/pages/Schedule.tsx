@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from "../config/axios";
 import MovieSelection from '../components/MovieSelection';
 import FilterForm from '../components/FilterForm';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ interface ScheduleItem {
 
 const Schedule = () => {
     const [scheduleItems, setScheduleItems] = useState<ScheduleItem[]>([]);
-    const { setSelectedMovies, setNumberOfTickets } = useData();
+    const { setSelectedMovie, setNumberOfTickets } = useData();
     const navigate = useNavigate();
     const userData = localStorage.getItem('logged_in_user');
     const userId = userData ? JSON.parse(userData).id : null;
@@ -33,65 +33,67 @@ const Schedule = () => {
         fetchData();
     }, []);
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/api/v1/movie-schedule');
-            const parsedData = response.data.map((item: ScheduleItem) => ({
-                ...item,
-                screeningTime: new Date(item.screeningTime)
-            }));
-            setScheduleItems(parsedData);
-        } catch (error) {
-            console.error('Error fetching schedule:', error);
-        }
-    };
-
-    const fetchFilteredData = async (filterType: string, filterValue: string | number | boolean) => {
-        try {
-            let url = `http://localhost:8080/api/v1/movie-schedule/search?${filterType}=${filterValue}`;
-
-            const response = await axios.get(url);
-
-            const parsedData = response.data.map((item: ScheduleItem) => ({
-                ...item,
-                screeningTime: new Date(item.screeningTime)
-            }));
-            setScheduleItems(parsedData);
-        } catch (error) {
-            console.error(`Error fetching schedule with filter ${filterType}=${filterValue}:`, error);
-        }
-    };
-
-    const fetchRecommendedData = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/v1/movie-schedule/recommended/${userId}`);
-            const parsedData = response.data.map((item: ScheduleItem) => ({
-                ...item,
-                screeningTime: new Date(item.screeningTime)
-            }));
-            if (parsedData.length > 0) {
+    const fetchData = () => {
+        axios.get('movie-schedule')
+            .then(response => {
+                const parsedData = response.data.map((item: ScheduleItem) => ({
+                    ...item,
+                    screeningTime: new Date(item.screeningTime)
+                }));
                 setScheduleItems(parsedData);
-            } else {
-                alert("User doesn't have enough movie history.");
-            }
-        } catch (error) {
-            console.error('Error fetching recommended schedule:', error);
-        }
+            })
+            .catch(error => {
+                console.error('Error fetching schedule:', error);
+            });
     };
 
-    const navigateToSeats = (numberOfTickets: number, selectedMovies: ScheduleItem[]) => {
+    const fetchFilteredData = (filterType: string, filterValue: string | number | boolean) => {
+        let url = `movie-schedule/search?${filterType}=${filterValue}`;
+        axios.get(url)
+            .then(response => {
+                const parsedData = response.data.map((item: ScheduleItem) => ({
+                    ...item,
+                    screeningTime: new Date(item.screeningTime)
+                }));
+                setScheduleItems(parsedData);
+            })
+            .catch(error => {
+                console.error(`Error fetching schedule with filter ${filterType}=${filterValue}:`, error);
+            });
+    };
+
+    const fetchRecommendedData = () => {
+        axios.get(`movie-schedule/recommended/${userId}`)
+            .then(response => {
+                const parsedData = response.data.map((item: ScheduleItem) => ({
+                    ...item,
+                    screeningTime: new Date(item.screeningTime)
+                }));
+                if (parsedData.length > 0) {
+                    setScheduleItems(parsedData);
+                } else {
+                    alert("User doesn't have enough movie history.");
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching recommended schedule:', error);
+            });
+    };
+
+
+    const navigateToSeats = (numberOfTickets: number, selectedMovie: ScheduleItem[]) => {
         setNumberOfTickets(numberOfTickets);
-        setSelectedMovies(selectedMovies);
+        setSelectedMovie(selectedMovie);
         navigate('/seats');
     };
 
-    const handleFilterChange = async (filterType: string, filterValue: string | number | boolean) => {
+    const handleFilterChange = async (filterType: string, filterValue: string | number | boolean): Promise<void> => {
         await fetchFilteredData(filterType, filterValue);
         console.log(filterType, typeof filterValue)
     };
 
-    const handleRecommendMovies = () => {
-        fetchRecommendedData();
+    const handleRecommendMovies = async () => {
+        await fetchRecommendedData();
     };
 
     return (

@@ -46,8 +46,10 @@ public class OrderService {
             User user = userOptional.get();
             MovieSchedule movieSchedule = movieScheduleOptional.get();
             Order order = createOrder(user, movieSchedule);
-            Ticket ticket = createTicket(orderDto.getSeat(),orderDto.getPrice(), order);
-            order.getTickets().add(ticket);
+            for (Integer seat : orderDto.getSeat()) {
+                Ticket ticket = createTicket(seat, orderDto.getPrice(), order);
+                order.getTickets().add(ticket);
+            }
             orderRepository.save(order);
         }
     }

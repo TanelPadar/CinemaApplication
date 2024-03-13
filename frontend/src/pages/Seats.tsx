@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import SeatSelection from "../components/SeatSelection";
-import { useData } from "../hooks/DataProvider";
-import { useNavigate } from "react-router-dom";
+import {useData} from "../hooks/DataProvider";
+import {useNavigate} from "react-router-dom";
+import axios from "../config/axios";
 
 interface SeatData {
     recommendedSeats: number[];
@@ -9,38 +10,47 @@ interface SeatData {
 }
 
 const Seats = () => {
-    const { selectedMovies, numberOfTickets, setSelectedSeats } = useData();
+    const {selectedMovie, numberOfTickets, setSelectedSeats, selectedSeats} = useData();
     const navigate = useNavigate();
-
     const [seatData, setSeatData] = useState<SeatData | null>(null);
+    const userData = localStorage.getItem('logged_in_user');
 
     useEffect(() => {
-        const auditoriumId = selectedMovies[0].auditorium.id;
-        const apiUrl = `http://localhost:8080/api/v1/auditorium/seats?auditoriumId=${auditoriumId}&numberOfTickets=${numberOfTickets}`;
+        const auditoriumId = selectedMovie[0].auditorium.id;
 
-        const fetchSeatData = async () => {
-            try {
-                const response = await fetch(apiUrl);
-                const data: SeatData = await response.json();
+        axios.get(`auditorium/seats?auditoriumId=${auditoriumId}&numberOfTickets=${numberOfTickets}`)
+            .then(response => {
+                const data: SeatData = response.data;
                 setSeatData(data);
-                console.log(data);
-            } catch (error) {
+            })
+            .catch(error => {
                 console.error('Error fetching seat data:', error);
-            }
-        };
-
-        fetchSeatData();
+            });
     }, []);
 
     const navigateToSummary = (seats: number[]) => {
         setSelectedSeats(seats);
+
+        axios.post('order/new', {
+            userId: userData ? JSON.parse(userData).id : null,
+            movieScheduleId: selectedMovie[0].id,
+            seat: selectedSeats,
+            price: 0.00
+        })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error(error);
+            });
         navigate("/summary");
     }
 
     return (
         <div className="container mt-5">
             <h2 className="text-center mb-4">Pick Seats</h2>
-            <SeatSelection navigate={(setSelectedSeats) => navigateToSummary(setSelectedSeats)} rows={4} seatsPerRow={6} takenSeats={seatData?.takenSeats ?? []} recommendedSeats={seatData?.recommendedSeats ?? []} />
+            <SeatSelection navigate={navigateToSummary} rows={4} seatsPerRow={6} takenSeats={seatData?.takenSeats ?? []}
+                           recommendedSeats={seatData?.recommendedSeats ?? []}/>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form} from 'react-bootstrap';
 
 interface FilterFormProps {
     handleFilterChange: (filterType: string, filterValue: string | number | boolean) => Promise<void>;
@@ -15,7 +15,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ handleFilterChange }) => {
 
 
     return (
-        <Form className="d-flex gap-3">
+        <Form className="d-flex align-items-center gap-3">
             <Form.Group>
                 <Form.Control as="select" name="genre" onChange={handleChange}>
                     <option value="">Select Genre</option>

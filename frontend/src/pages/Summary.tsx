@@ -1,19 +1,23 @@
 import React from 'react';
-import { useData } from "../hooks/DataProvider";
+import {useData} from "../hooks/DataProvider";
+
 
 const Summary = () => {
-    const { selectedMovies, numberOfTickets,selectedSeats } = useData();
-    console.log(selectedSeats)
+    const {selectedMovie, numberOfTickets, selectedSeats} = useData();
+
+
     return (
-        <div>
-            <h2>Summary</h2>
-            <p>Number of tickets: {numberOfTickets}</p>
-            <p>Selected movies:</p>
-            <ul>
-                {selectedMovies.map((item, index: number) => (
-                    <li key={index}>{item.movie.name} - {item.screeningTime.toLocaleString()}</li>
-                ))}
-            </ul>
+        <div className={"d-flex justify-content-center align-items-center vh-100"}>
+            <div className={"d-block"}>
+                <h2>Thank you!</h2>
+                <p>Number of tickets: {numberOfTickets}</p>
+                <p>Selected movies:</p>
+                <ul>
+                    {selectedMovie.map((item, index: number) => (
+                        <li key={index}>{item.movie.name} - {item.screeningTime.toLocaleString()}</li>
+                    ))}
+                </ul>
+            </div>
 
         </div>
     );
