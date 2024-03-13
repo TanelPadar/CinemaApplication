@@ -1,7 +1,6 @@
 package com.example.cinema.controller;
 
 import com.example.cinema.dto.MovieScheduleDto;
-import com.example.cinema.form.MovieSearchForm;
 import com.example.cinema.service.MovieScheduleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +22,15 @@ public class MovieScheduleController {
     }
 
     @GetMapping("/search")
-    List<MovieScheduleDto> search(@RequestBody MovieSearchForm form) {
-        return movieScheduleService.getMovieScheduleBySearch(form);
+    List<MovieScheduleDto> search(
+            @RequestParam(name = "genre", required = false) String genre,
+            @RequestParam(name = "ageLimit", required = false) Integer ageLimit,
+            @RequestParam(name = "language", required = false) String language,
+            @RequestParam(name = "screeningTime", required = false, defaultValue = "false") boolean screeningTime
+    ) {
+        return movieScheduleService.getMovieScheduleBySearch(genre, ageLimit, language, screeningTime);
     }
+
 
 
     @GetMapping("/recommended/{userId}")

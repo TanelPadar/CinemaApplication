@@ -45,7 +45,7 @@ const MovieSelection= ({ scheduleItems, navigate }: MovieSelectionProps) => {
 
     return (
         <div>
-            <label htmlFor="numberOfPeopleInput">Mitu piletit?</label>
+            <label htmlFor="numberOfPeopleInput">How many tickets?</label>
             <input
                 type="number"
                 id="numberOfPeopleInput"

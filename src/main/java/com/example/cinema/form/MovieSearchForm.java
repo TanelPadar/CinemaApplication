@@ -9,5 +9,6 @@ public class MovieSearchForm {
     private String genre;
     private Integer ageLimit;
     private String language;
+    private boolean screeningTime;
 
 }

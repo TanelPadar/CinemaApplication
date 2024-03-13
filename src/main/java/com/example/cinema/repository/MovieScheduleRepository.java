@@ -8,12 +8,16 @@ import java.util.List;
 public interface MovieScheduleRepository extends JpaRepository<MovieSchedule, Long> {
 
     @Query("""
-                select  ms from MovieSchedule ms
-                where (:#{#filter.genre} is null or ms.movie.genre = :#{#filter.genre})
-                and (:#{#filter.ageLimit} is null or ms.movie.ageLimit = :#{#filter.ageLimit})
-                and (:#{#filter.language} is null or ms.movie.language = :#{#filter.language})
-            """)
+    select ms from MovieSchedule ms
+    where (:#{#filter.genre} is null or ms.movie.genre = :#{#filter.genre})
+    and (:#{#filter.ageLimit} is null or ms.movie.ageLimit <= :#{#filter.ageLimit})
+    and (:#{#filter.language} is null or ms.movie.language = :#{#filter.language})
+    order by 
+    case when :#{#filter.screeningTime} = true then ms.screeningTime end asc
+""")
     List<MovieSchedule> search(@Param("filter") MovieSearchForm form);
+
+
 
     List<MovieSchedule> findByIdIn(List<Long> scheduleIds);
 

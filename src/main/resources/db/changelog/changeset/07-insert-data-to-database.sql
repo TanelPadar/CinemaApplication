@@ -1,11 +1,11 @@
 INSERT INTO movie (name,genre,language,age_limit)
-VALUES ('Six Bullets','action','english', 15);
+VALUES ('Six Bullets','action','english', 18);
 
 INSERT INTO movie (name,genre,language,age_limit)
-VALUES ('Top Gun: Maverick','action','Estonian', 12);
+VALUES ('Top Gun: Maverick','action','estonian', 12);
 
 INSERT INTO movie (name,genre,language,age_limit)
-VALUES ('The Dictator: Maverick','comedy','english', 15);
+VALUES ('The Dictator','comedy','english', 18);
 
 INSERT INTO movie (name,genre,language,age_limit)
 VALUES ('Inception','sci-fi','english', 12);
@@ -22,10 +22,10 @@ INSERT INTO movie_schedule (screening_time, movie_id, auditorium_id)
 VALUES (DATEADD('HOUR', 3, CURRENT_TIMESTAMP), (SELECT id FROM movie WHERE name = 'Six Bullets'), 1);
 
 INSERT INTO movie_schedule (screening_time, movie_id, auditorium_id)
-VALUES (DATEADD('HOUR', 3, CURRENT_TIMESTAMP), (SELECT id FROM movie WHERE name = 'Top Gun: Maverick'), 1);
+VALUES (DATEADD('HOUR', 4, CURRENT_TIMESTAMP), (SELECT id FROM movie WHERE name = 'Top Gun: Maverick'), 1);
 
 INSERT INTO movie_schedule (screening_time, movie_id, auditorium_id)
-VALUES (DATEADD('HOUR', 3, CURRENT_TIMESTAMP), (SELECT id FROM movie WHERE name = 'The Dictator: Maverick'), 1);
+VALUES (DATEADD('HOUR', 3, CURRENT_TIMESTAMP), (SELECT id FROM movie WHERE name = 'The Dictator'), 1);
 
 INSERT INTO `user` (username) VALUES ('tanel');
 INSERT INTO `user` (username) VALUES ('kaisa');
