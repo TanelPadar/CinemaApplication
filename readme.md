@@ -3,21 +3,21 @@
 
 Welcome to Cinema Application! This application is built with Spring Boot for the backend and React with TypeScript for the frontend. Gradle is used as the build tool for the backend.
 
-## Getting Started
+### Getting Started
 
 To get started with running the application locally, follow the steps below:
 
 
 - Clone the Repository
 
-# Backend
+## Backend
 
 #### Database
 
 The application uses Liquibase for database schema management.
 
 For the database, I chose to use H2 Database, a lightweight, in-memory database. 
-### Build the project:
+#### Build the project:
 - Navigate to the root directory of the cloned project
 ```sh
 ./gradlew build
@@ -33,7 +33,7 @@ Once the application is running, you can access it by opening a web browser and 
 http://localhost:8080.
 
 
-# Frontend
+## Frontend
 
 
 
@@ -44,13 +44,13 @@ Then you can run:
 
 
 
-### `npm install`
-### `npm start`
+#### `npm install`
+#### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### Test User
+## Test User
 I have created a test user with the username "tanel". You can use this user to test most of the application functionality.
 
 
