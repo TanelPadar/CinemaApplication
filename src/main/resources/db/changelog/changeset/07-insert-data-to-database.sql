@@ -28,13 +28,8 @@ INSERT INTO movie_schedule (screening_time, movie_id, auditorium_id)
 VALUES (DATEADD('HOUR', 3, CURRENT_TIMESTAMP), (SELECT id FROM movie WHERE name = 'The Dictator'), 1);
 
 INSERT INTO `user` (username) VALUES ('tanel');
-INSERT INTO `user` (username) VALUES ('kaisa');
 
 INSERT INTO `order` (user_id,movie_schedule_id) VALUES (1,1);
 INSERT INTO `order` (user_id,movie_schedule_id) VALUES (1,1);
 
-INSERT INTO `order` (user_id,movie_schedule_id) VALUES (1,3);
-INSERT INTO `order` (user_id,movie_schedule_id) VALUES (1,3);
-INSERT INTO `order` (user_id,movie_schedule_id) VALUES (1,3);
-INSERT INTO `order` (user_id,movie_schedule_id) VALUES (2,3);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from "../config/axios";
+import { getRequest } from "../config/axios";
 import MovieSelection from '../components/MovieSelection';
 import FilterForm from '../components/FilterForm';
 import { useNavigate } from 'react-router-dom';
@@ -33,52 +33,36 @@ const Schedule = () => {
         fetchData();
     }, []);
 
-    const fetchData = () => {
-        axios.get('movie-schedule')
-            .then(response => {
-                const parsedData = response.data.map((item: ScheduleItem) => ({
-                    ...item,
-                    screeningTime: new Date(item.screeningTime)
-                }));
-                setScheduleItems(parsedData);
-            })
-            .catch(error => {
-                console.error('Error fetching schedule:', error);
-            });
+    const fetchData = async () => {
+        const response = await getRequest('movie-schedule');
+        const parsedData = response.data.map((item: ScheduleItem) => ({
+            ...item,
+            screeningTime: new Date(item.screeningTime)
+        }));
+        setScheduleItems(parsedData);
     };
 
-    const fetchFilteredData = (filterType: string, filterValue: string | number | boolean) => {
-        axios.get(`movie-schedule/search?${filterType}=${filterValue}`)
-            .then(response => {
-                const parsedData = response.data.map((item: ScheduleItem) => ({
-                    ...item,
-                    screeningTime: new Date(item.screeningTime)
-                }));
-                setScheduleItems(parsedData);
-            })
-            .catch(error => {
-                console.error(`Error fetching schedule with filter ${filterType}=${filterValue}:`, error);
-            });
+    const fetchFilteredData = async (filterType: string, filterValue: string | number | boolean) => {
+        const response = await getRequest(`movie-schedule/search?${filterType}=${filterValue}`);
+        const parsedData = response.data.map((item: ScheduleItem) => ({
+            ...item,
+            screeningTime: new Date(item.screeningTime)
+        }));
+        setScheduleItems(parsedData);
     };
 
-    const fetchRecommendedData = () => {
-        axios.get(`movie-schedule/recommended/${userId}`)
-            .then(response => {
-                const parsedData = response.data.map((item: ScheduleItem) => ({
-                    ...item,
-                    screeningTime: new Date(item.screeningTime)
-                }));
-                if (parsedData.length > 0) {
-                    setScheduleItems(parsedData);
-                } else {
-                    alert("User doesn't have enough movie history.");
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching recommended schedule:', error);
-            });
+    const fetchRecommendedData = async () => {
+        const response = await getRequest(`movie-schedule/recommended/${userId}`);
+        const parsedData = response.data.map((item: ScheduleItem) => ({
+            ...item,
+            screeningTime: new Date(item.screeningTime)
+        }));
+        if (parsedData.length > 0) {
+            setScheduleItems(parsedData);
+        } else {
+            alert("User doesn't have enough movie history.");
+        }
     };
-
 
     const navigateToSeats = (numberOfTickets: number, selectedMovie: ScheduleItem[]) => {
         setNumberOfTickets(numberOfTickets);
@@ -88,7 +72,6 @@ const Schedule = () => {
 
     const handleFilterChange = async (filterType: string, filterValue: string | number | boolean): Promise<void> => {
         await fetchFilteredData(filterType, filterValue);
-        console.log(filterType, typeof filterValue)
     };
 
     const handleRecommendMovies = async () => {

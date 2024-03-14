@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import SeatSelection from "../components/SeatSelection";
 import {useData} from "../hooks/DataProvider";
 import {useNavigate} from "react-router-dom";
-import axios from "../config/axios";
+import {getRequest, postRequest} from "../config/axios";
 
 interface SeatData {
     recommendedSeats: number[];
@@ -14,37 +14,30 @@ const Seats = () => {
     const navigate = useNavigate();
     const [seatData, setSeatData] = useState<SeatData | null>(null);
     const userData = localStorage.getItem('logged_in_user');
+    const auditoriumId = selectedMovie[0].auditorium?.id;
+
 
     useEffect(() => {
-        const auditoriumId = selectedMovie[0].auditorium.id;
-
-        axios.get(`auditorium/seats?auditoriumId=${auditoriumId}&numberOfTickets=${numberOfTickets}`)
-            .then(response => {
-                const data: SeatData = response.data;
-                setSeatData(data);
-            })
-            .catch(error => {
-                console.error('Error fetching seat data:', error);
-            });
+        const fetchData = async () => {
+            const response = await getRequest(`auditorium/seats?auditoriumId=${auditoriumId}&numberOfTickets=${numberOfTickets}`);
+            setSeatData(response.data)
+        };
+        fetchData();
     }, []);
+
 
     const navigateToSummary = (seats: number[]) => {
         setSelectedSeats(seats);
-
-        axios.post('order/new', {
+        postRequest('order/new', {
             userId: userData ? JSON.parse(userData).id : null,
             movieScheduleId: selectedMovie[0].id,
             seat: selectedSeats,
             price: 0.00
+        }).then(response => {
+            navigate("/summary");
         })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        navigate("/summary");
     }
+
 
     return (
         <div className="container mt-5">

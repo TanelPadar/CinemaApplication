@@ -1,17 +1,16 @@
-import React, { ChangeEvent } from 'react';
-import { Form} from 'react-bootstrap';
+import React, {ChangeEvent} from 'react';
+import {Form} from 'react-bootstrap';
 
 interface FilterFormProps {
     handleFilterChange: (filterType: string, filterValue: string | number | boolean) => Promise<void>;
 }
 
-const FilterForm: React.FC<FilterFormProps> = ({ handleFilterChange }) => {
+const FilterForm  = ({handleFilterChange}: FilterFormProps) => {
     const handleChange = async (event: ChangeEvent<any>) => {
-        const { name, value, checked } = event.target;
+        const {name, value, checked} = event.target;
         const filterValue = name === 'screeningTime' ? checked : value;
         await handleFilterChange(name, filterValue);
     };
-
 
 
     return (

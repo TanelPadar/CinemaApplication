@@ -10,11 +10,8 @@ type SeatProps = {
     isRecommended: boolean;
 };
 
-const Seat = ({seatNumber, isTaken, isRecommended}: SeatProps) => (
-    <div
-        className={`seat px-2 ${isTaken ? 'taken' : ''} ${isRecommended ? 'recommended' : ''}`}
-        style={{backgroundColor: isTaken ? 'red' : isRecommended ? 'green' : 'white'}}
-    >
+const Seat = ({isTaken, isRecommended}: SeatProps) => (
+    <div className={`seat px-2 ${isTaken ? 'taken' : ''} ${isRecommended ? 'recommended' : ''}`}>
         <FontAwesomeIcon icon={faCouch}/>
     </div>
 );

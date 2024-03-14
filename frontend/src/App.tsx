@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Schedule from './pages/Schedule';
 import Seats from './pages/Seats';
 import Summary from './pages/Summary';
+import './assets/styles.css';
+
 
 function App() {
     return (

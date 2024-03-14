@@ -1,0 +1,11 @@
+.seat {
+    background-color: white;
+}
+
+.taken {
+    background-color: red;
+}
+
+.recommended {
+    background-color: green;
+}
