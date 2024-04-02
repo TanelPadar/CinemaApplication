@@ -1,7 +1,11 @@
 package com.example.cinema.repository;
 
+import com.example.cinema.form.MovieSearchForm;
 import com.example.cinema.model.MovieSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 
 import java.util.List;
 
